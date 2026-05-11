@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pure Chain | Freshness Traceability</title>
+    <style>
+        :root {
+            --bg-cream: #fdfbf7;
+            --pure-white: #ffffff;
+            --organic-green: #2d6a4f;
+            --sage-green: #52796f;
+            --text-wood: #2f2e2c;
+            --border: #e0e0e0;
+        }
+
+        body {
+            background-color: var(--bg-cream);
+            color: var(--text-wood);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background: var(--pure-white);
+            padding: 15px 60px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo { font-weight: 900; font-size: 1.5rem; color: var(--organic-green); letter-spacing: 1px; }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+            flex-grow: 1;
+        }
+
+        .product-section {
+            display: flex;
+            gap: 50px;
+            background: var(--pure-white);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            align-items: center;
+            margin-bottom: 50px;
+        }
+
+        .img-box {
+            background: #ffffff;
+            border: 2px solid var(--organic-green);
+            border-radius: 20px;
+            width: 380px;
+            height: 380px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+            padding: 10px;
+        }
+
+        .img-box img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .details-box {
+            flex-grow: 1;
+        }
+
+        .badge {
+            background: var(--organic-green);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .price { font-size: 2.8rem; color: var(--organic-green); font-weight: 800; margin: 15px 0; }
+
+        .journey-section {
+            text-align: center;
+        }
+
+        .journey-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--sage-green);
+            margin-bottom: 30px;
+            display: block;
+        }
+
+        .stages-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .stage-link {
+            text-decoration: none;
+            color: inherit;
+            flex: 1;
+            display: block;
+        }
+
+        .stage-card {
+            background: var(--pure-white);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 25px;
+            transition: 0.3s;
+            text-align: center;
+        }
+
+        .stage-card:hover {
+            border-color: var(--organic-green);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        .stage-icon { font-size: 2rem; margin-bottom: 10px; display: block; }
+        .stage-card h3 { margin: 10px 0 5px; color: var(--organic-green); font-size: 1.1rem; }
+        .stage-card p { margin: 0; font-size: 0.85rem; color: #777; }
+
+        .arrow {
+            font-size: 2rem;
+            color: var(--organic-green);
+            font-weight: bold;
+            user-select: none;
+            opacity: 0.4;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">PURE CHAIN</div>
+        <div style="font-weight: 600; color: var(--sage-green)">Trace ID: #PC-7721</div>
+    </header>
+
+    <div class="container">
+        <section class="product-section">
+            <div class="img-box">
+                <img src="https://foodcare.in/cdn/shop/files/carrot.jpg?v=1768271273&width=713" alt="Organic Nantes Carrots">
+            </div>
+            
+            <div class="details-box">
+                <span class="badge">CERTIFIED ORGANIC</span>
+                <h1 style="font-size: 3rem; margin: 10px 0; letter-spacing: -1px;">Organic Carrots</h1>
+                <p style="color: #555; line-height: 1.6; font-size: 1.1rem;">
+                    Freshly pulled from nutrient-rich soil. These carrots are famous for their high sugar content and crisp, coreless texture.
+                </p>
+                <div class="price">Rs. 180.00</div>
+                <div style="display: flex; gap: 30px; font-size: 0.95rem; color: var(--sage-green);">
+                    <span><strong>Weight:</strong> 500g</span>
+                    <span><strong>Variety:</strong> Nantes Premium</span>
+                    <span><strong>Status:</strong> In Stock</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="journey-section">
+            <span class="journey-title">Supply Chain Journey</span>
+            <div class="stages-row">
+                
+                <a href="farming.html" class="stage-link">
+                    <div class="stage-card">
+                        <span class="stage-icon">👨‍🌾</span>
+                        <h3>Farming</h3>
+                        <p>Harvested 5 hours ago</p>
+                    </div>
+                </a>
+
+                <div class="arrow">→</div>
+
+                <a href="transport.html" class="stage-link">
+                    <div class="stage-card">
+                        <span class="stage-icon">🚛</span>
+                        <h3>Transportation</h3>
+                        <p>In Transit (4°C)</p>
+                    </div>
+                </a>
+
+                <div class="arrow">→</div>
+
+                <a href="warehouse.html" class="stage-link">
+                    <div class="stage-card">
+                        <span class="stage-icon">🏠</span>
+                        <h3>Warehouse</h3>
+                        <p>Verified & Ready</p>
+                    </div>
+                </a>
+
+            </div>
+        </section>
+    </div>
+
+</body>
+</html>
