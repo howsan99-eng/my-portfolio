@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pure Chain | Transportation Logistics</title>
+    <style>
+        :root {
+            --bg-cream: #fdfbf7;
+            --pure-white: #ffffff;
+            --organic-green: #2d6a4f;
+            --sage-green: #52796f;
+            --text-wood: #2f2e2c;
+            --border: #e0e0e0;
+            --status-green: #e8f5e9;
+            --alert-green: #2ecc71;
+        }
+
+        body {
+            background-color: var(--bg-cream);
+            color: var(--text-wood);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 1100px; margin: auto; }
+
+        .back-btn {
+            text-decoration: none;
+            color: var(--organic-green);
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+
+        header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; }
+        header h1 { color: var(--organic-green); font-size: 2.2rem; margin: 0; }
+        .batch-id { color: var(--sage-green); font-weight: 600; }
+
+        /* Dashboard Grid */
+        .logistics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--pure-white);
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 25px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--organic-green);
+        }
+
+        .label-tag {
+            font-size: 0.75rem;
+            padding: 4px 12px;
+            background: #f1f5f9;
+            border-radius: 100px;
+            color: #475569;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* Journey Details */
+        .journey-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .stat-box { background: var(--bg-cream); padding: 15px; border-radius: 15px; }
+        .stat-box small { color: var(--sage-green); font-size: 0.8rem; display: block; margin-bottom: 5px; }
+        .stat-box div { font-weight: 700; font-size: 1.1rem; }
+        .green-text { color: var(--organic-green); font-size: 0.85rem; display: block; margin-top: 5px; }
+
+        /* Climate Bars */
+        .climate-bar-row { margin-bottom: 15px; }
+        .bar-label { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 8px; }
+        .progress-bg { background: #eee; height: 8px; border-radius: 10px; overflow: hidden; }
+        .progress-fill { background: var(--alert-green); height: 100%; border-radius: 10px; }
+
+        /* Verified Banner */
+        .verified-banner {
+            background: var(--status-green);
+            border: 1px solid #c3e6cb;
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .explanation { font-size: 0.8rem; color: #666; margin-top: 15px; line-height: 1.4; }
+
+        /* Gas Readings Grid */
+        .gas-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .gas-box { border: 1px solid #f0f0f0; padding: 15px; border-radius: 15px; }
+        .gas-val { font-size: 1.4rem; font-weight: 800; margin: 5px 0; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="back-btn">← Back to Dashboard</a>
+
+    <header>
+        <div>
+            <h1>Transport Verification</h1>
+            <p style="color: var(--sage-green); margin-top: 5px;">Live Logistics Monitoring: Farm to Warehouse</p>
+        </div>
+        <div class="batch-id">Batch #PC-2026-0471</div>
+    </header>
+
+    <div class="logistics-grid">
+        
+        <div class="card">
+            <div class="card-title">
+                <span>📍</span> Journey Details
+                <span class="label-tag">GPS & 5G Tracked</span>
+            </div>
+            <div class="journey-stats">
+                <div class="stat-box">
+                    <small>Departure</small>
+                    <div>29 Apr, 08:12</div>
+                    <span class="green-text">Kurunegala Farm</span>
+                </div>
+                <div class="stat-box">
+                    <small>Arrival</small>
+                    <div>29 Apr, 11:34</div>
+                    <span class="green-text">PureChain Warehouse</span>
+                </div>
+                <div class="stat-box">
+                    <small>Journey Duration</small>
+                    <div>3 hr 22 min</div>
+                    <span class="green-text">On schedule</span>
+                </div>
+                <div class="stat-box">
+                    <small>Route Deviation</small>
+                    <div>0</div>
+                    <span class="green-text">Approved route only</span>
+                </div>
+            </div>
+            <div class="verified-banner">
+                🛡️ <strong>GPS Verified</strong> — No deviation from approved delivery route.
+            </div>
+            <p class="explanation">Why this matters: Route verification ensures produce was not taken to unregistered locations or exposed to unknown conditions during transit.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
+                <span>🌡️</span> In-Vehicle Climate
+                <span class="label-tag">IoT Enabled</span>
+            </div>
+            <div class="journey-stats" style="margin-bottom: 25px;">
+                <div class="stat-box">
+                    <small>Avg Temperature</small>
+                    <div style="font-size: 1.8rem;">12°C</div>
+                    <span class="green-text">Safe range: 8–15°C</span>
+                </div>
+                <div class="stat-box">
+                    <small>Avg Humidity</small>
+                    <div style="font-size: 1.8rem;">74%</div>
+                    <span class="green-text">Safe range: 70–80%</span>
+                </div>
+            </div>
+            
+            <div class="climate-bar-row">
+                <div class="bar-label"><span>0-1 hr Transit</span> <span>11°C</span></div>
+                <div class="progress-bg"><div class="progress-fill" style="width: 75%;"></div></div>
+            </div>
+            <div class="climate-bar-row">
+                <div class="bar-label"><span>1-2 hr Transit</span> <span>12°C</span></div>
+                <div class="progress-bg"><div class="progress-fill" style="width: 80%;"></div></div>
+            </div>
+            <div class="climate-bar-row">
+                <div class="bar-label"><span>Final Leg</span> <span>12°C</span></div>
+                <div class="progress-bg"><div class="progress-fill" style="width: 80%;"></div></div>
+            </div>
+
+            <div class="verified-banner">
+                ✅ Temperature stayed within safe range for 100% of the journey.
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
+                <span>💨</span> Air Quality (Cargo Hold)
+                <span class="label-tag">Gas Sensor Active</span>
+            </div>
+            <div class="gas-grid">
+                <div class="gas-box">
+                    <small>Ammonia (NH₃)</small>
+                    <div class="gas-val">0.8 <span style="font-size: 0.8rem; font-weight: normal;">ppm</span></div>
+                    <span class="green-text">Limit: <5 ppm</span>
+                </div>
+                <div class="gas-box">
+                    <small>Ethylene (C₂H₄)</small>
+                    <div class="gas-val">1.2 <span style="font-size: 0.8rem; font-weight: normal;">ppm</span></div>
+                    <span class="green-text">Limit: <10 ppm</span>
+                </div>
+                <div class="gas-box">
+                    <small>Carbon Dioxide (CO₂)</small>
+                    <div class="gas-val">412 <span style="font-size: 0.8rem; font-weight: normal;">ppm</span></div>
+                    <span class="green-text">Normal ambient</span>
+                </div>
+                <div class="gas-box">
+                    <small>Spoilage Alerts</small>
+                    <div class="gas-val">0</div>
+                    <span class="green-text">No events triggered</span>
+                </div>
+            </div>
+            <p class="explanation">Why this matters: High ethylene causes premature ripening. High ammonia signals decomposition. All readings within normal range confirm your produce was safe.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
+                <span>🔒</span> Physical Handling & Seal
+                <span class="label-tag">Anti-Tamper</span>
+            </div>
+            <div class="journey-stats" style="margin-bottom: 25px;">
+                <div class="stat-box">
+                    <small>Shock Events (>3G)</small>
+                    <div style="font-size: 1.8rem;">0</div>
+                    <span class="green-text">No rough handling</span>
+                </div>
+                <div class="stat-box">
+                    <small>Max Vibration</small>
+                    <div style="font-size: 1.8rem;">0.4 G</div>
+                    <span class="green-text">Normal road level</span>
+                </div>
+            </div>
+            <div class="verified-banner">
+                🔐 <strong>Tamper-proof seal intact</strong> — Cargo door not opened during transit.
+            </div>
+            <p style="font-size: 0.85rem; color: #555; margin-top: 15px;">
+                <strong>Seal Log:</strong> Locked 08:12 at Farm • Opened 11:34 at Warehouse • 0 intermediate events.
+            </p>
+            <p class="explanation">Shock data confirms produce was not bruised or damaged in transit.</p>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
