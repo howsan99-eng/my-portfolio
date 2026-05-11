@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pure Chain | Warehouse & Storage Details</title>
+    <style>
+        :root {
+            --bg-cream: #fdfbf7;
+            --pure-white: #ffffff;
+            --organic-green: #2d6a4f;
+            --sage-green: #52796f;
+            --text-wood: #2f2e2c;
+            --border: #e0e0e0;
+            --status-blue: #0070f3;
+            --success-bg: #f0fdf4;
+        }
+
+        body {
+            background-color: var(--bg-cream);
+            color: var(--text-wood);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            height: 100vh;
+            overflow: hidden; /* Fixed dashboard feel */
+        }
+
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            height: 100vh;
+        }
+
+        /* LEFT COLUMN: COLD STORAGE CONDITIONS */
+        .conditions-panel {
+            padding: 60px;
+            overflow-y: auto;
+            border-right: 1px solid var(--border);
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: var(--organic-green);
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+
+        .panel-title { display: flex; align-items: center; gap: 15px; margin-bottom: 40px; }
+        .panel-title h1 { margin: 0; font-size: 1.8rem; color: var(--organic-green); }
+
+        .conditions-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .cond-card {
+            background: var(--pure-white);
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .cond-card h3 { margin: 0 0 10px; font-size: 0.85rem; text-transform: uppercase; color: var(--sage-green); }
+        .cond-card .value { font-size: 2.2rem; font-weight: 800; margin: 10px 0; }
+        .cond-card .status { font-size: 0.85rem; font-weight: 600; color: var(--organic-green); }
+        .cond-card .icon { position: absolute; top: 25px; right: 25px; font-size: 1.5rem; opacity: 0.3; }
+
+        .status-summary {
+            grid-column: span 2;
+            background: #f8fbff;
+            border: 1px solid #d0e2ff;
+            padding: 25px;
+            border-radius: 20px;
+            margin-top: 20px;
+        }
+
+        /* RIGHT COLUMN: HANDLING TIMELINE */
+        .timeline-panel {
+            padding: 60px;
+            background: var(--pure-white);
+            overflow-y: auto;
+        }
+
+        .timeline-header { margin-bottom: 40px; }
+        .timeline-header h2 { margin: 0; color: var(--organic-green); }
+
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: -35px; top: 0;
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            background: var(--organic-green);
+            border: 4px solid var(--pure-white);
+            box-shadow: 0 0 0 2px var(--organic-green);
+        }
+
+        .timeline-item.active .timeline-marker { background: var(--status-blue); box-shadow: 0 0 0 2px var(--status-blue); }
+
+        .time-label { font-size: 0.85rem; font-weight: 700; color: var(--sage-green); margin-bottom: 5px; display: block; }
+        .event-box {
+            background: var(--bg-cream);
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        .event-box h4 { margin: 0 0 5px; font-size: 1.1rem; }
+        .event-box p { margin: 5px 0; font-size: 0.9rem; color: #666; }
+        
+        .tag {
+            float: right;
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: var(--success-bg);
+            color: var(--organic-green);
+            font-weight: bold;
+        }
+
+        .tag.blue { background: #e0f2fe; color: var(--status-blue); }
+
+    </style>
+</head>
+<body>
+
+<div class="dashboard-container">
+    
+    <div class="conditions-panel">
+        <a href="index.html" class="back-btn">← Back to Dashboard</a>
+        
+        <div class="panel-title">
+            <span>❄️</span>
+            <h1>Cold Storage Conditions</h1>
+        </div>
+
+        <div class="conditions-grid">
+            <div class="cond-card">
+                <h3>Storage Zone</h3>
+                <div class="value">Zone B2</div>
+                <div class="status">Assigned: 29 Apr 15:10</div>
+                <span class="icon">🏠</span>
+            </div>
+
+            <div class="cond-card">
+                <h3>Days in Storage</h3>
+                <div class="value">3 Days</div>
+                <div class="status">Within freshness window</div>
+                <span class="icon">📅</span>
+            </div>
+
+            <div class="cond-card">
+                <h3>Storage Temperature</h3>
+                <div class="value">10 °C</div>
+                <div class="status">Maintained consistently</div>
+                <span class="icon">🌡️</span>
+            </div>
+
+            <div class="cond-card">
+                <h3>Storage Humidity</h3>
+                <div class="value">72 %</div>
+                <div class="status">Ideal for tomatoes</div>
+                <span class="icon">💧</span>
+            </div>
+
+            <div class="status-summary">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <strong>Condition Status: <span style="color:var(--status-blue)">● Optimal</span></strong>
+                    <span style="font-size: 0.8rem; color: var(--sage-green);">Last sensor update: 2 May 10:20</span>
+                </div>
+                <p style="font-size: 0.85rem; margin-top: 10px; color: #555;">All monitored conditions (Temperature range: 2°C - 12°C, Humidity range: 60% - 80%) are within ideal ranges for cold storage.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="timeline-panel">
+        <div class="timeline-header">
+            <h2>Warehouse Handling Timeline</h2>
+            <p style="color:var(--sage-green)">Chronological record from receipt to dispatch</p>
+        </div>
+
+        <div class="timeline">
+            
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <span class="time-label">29 Apr, 14:32</span>
+                <div class="event-box">
+                    <span class="tag">COMPLETED</span>
+                    <h4>Received and inspected</h4>
+                    <p>Weight: 480 kg • Quality gate: passed</p>
+                    <p style="font-size: 0.8rem; font-style: italic;">Shipment received and passed quality inspection.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <span class="time-label">29 Apr, 15:10</span>
+                <div class="event-box">
+                    <span class="tag">COMPLETED</span>
+                    <h4>Cold storage assigned</h4>
+                    <p>Zone B2 • Temp logged at 10°C</p>
+                    <p style="font-size: 0.8rem; font-style: italic;">Goods placed in designated cold storage zone B2.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <span class="time-label">2 May, 08:45</span>
+                <div class="event-box">
+                    <span class="tag">COMPLETED</span>
+                    <h4>Packed and labelled</h4>
+                    <p>Order #ORD-9812 • Staff ID: W-04</p>
+                    <p style="font-size: 0.8rem; font-style: italic;">Items packed, labelled and prepared for outbound delivery.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item active">
+                <div class="timeline-marker"></div>
+                <span class="time-label">2 May, 10:20</span>
+                <div class="event-box">
+                    <span class="tag blue">IN TRANSIT</span>
+                    <h4>Dispatched for delivery</h4>
+                    <p>Vehicle PC-TRK-07 • Transit sensors activated</p>
+                    <p style="font-size: 0.8rem; font-style: italic;">Shipment loaded onto vehicle and en route to destination.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
