@@ -1,3 +1,20 @@
+<div class="sensor-section">
+        <div class="sensor-header">
+            <h2 style="margin:0; font-size:1.4rem;">Live IoT Sensor Data (Google Sheets Sync)</h2>
+            <div class="live-tag"><div class="live-dot"></div> LIVE FROM FIELD</div>
+        </div>
+
+        <div class="charts-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+            <div class="chart-box"><span class="chart-label">Nitrogen (N)</span><canvas id="nChart"></canvas></div>
+            <div class="chart-box"><span class="chart-label">Phosphorus (P)</span><canvas id="pChart"></canvas></div>
+            <div class="chart-box"><span class="chart-label">Potassium (K)</span><canvas id="kChart"></canvas></div>
+            <div class="chart-box"><span class="chart-label">Temperature (°C)</span><canvas id="tempChart"></canvas></div>
+            <div class="chart-box"><span class="chart-label">Soil Moisture (%)</span><canvas id="moistureChart"></canvas></div>
+            <div class="chart-box"><span class="chart-label">Gas (CO2 ppm)</span><canvas id="gasChart"></canvas></div>
+        </div>
+    </div>
+</div>
+
 <script>
     const apiURL = 'https://sheetdb.io/api/v1/22nvlss512brg';
 
@@ -6,12 +23,9 @@
             const response = await fetch(apiURL);
             const data = await response.json();
 
-            // Log data to console to verify column names match exactly
-            console.log("Retrieved Data:", data);
-
-            // Clean data helper: ensures values are numbers even if sheet has units/spaces
+            // Helper to clean data: removes text/units so Chart.js only sees numbers
             const clean = (val) => {
-                if (!val) return 0;
+                if (val === undefined || val === null) return 0;
                 return parseFloat(val.toString().replace(/[^0-9.]/g, '')) || 0;
             };
 
@@ -32,21 +46,19 @@
                             backgroundColor: color + '22',
                             fill: true,
                             tension: 0.4,
-                            pointRadius: 3
+                            pointRadius: 2
                         }]
                     },
                     options: { 
                         responsive: true, 
                         maintainAspectRatio: false,
                         plugins: { legend: { display: false } },
-                        scales: {
-                            y: { beginAtZero: true }
-                        }
+                        scales: { y: { beginAtZero: true } }
                     }
                 });
             };
 
-            // Mapping Data from Sheet - Using exact matches for your column headers
+            // Mapping Data from Sheet (Matching your column headers exactly)
             createChart('nChart', 'Nitrogen', '#2d6a4f', data.map(i => clean(i.Nitrogen)));
             createChart('pChart', 'Phosphorus', '#386641', data.map(i => clean(i.Phosphorus)));
             createChart('kChart', 'Potassium', '#6a994e', data.map(i => clean(i.Potassium)));
@@ -61,3 +73,5 @@
 
     initDashboard();
 </script>
+</body>
+</html>
