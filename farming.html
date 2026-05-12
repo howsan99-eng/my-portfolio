@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pure Chain | Farming Stage Details</title>
+    <title>Pure Chain | Live Farming IoT</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
@@ -38,7 +38,6 @@
         header h1 { color: var(--organic-green); font-size: 2.2rem; margin: 0; }
         header p { color: var(--sage-green); margin: 5px 0 0; }
 
-        /* Top Cards Layout */
         .info-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -61,19 +60,6 @@
         .detail-item { margin-bottom: 12px; font-size: 0.95rem; }
         .detail-item strong { color: var(--organic-green); display: inline-block; width: 130px; }
 
-        .cert-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            background: #f0fdf4;
-            border: 1px solid #dcfce7;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            margin-right: 5px;
-            color: var(--organic-green);
-        }
-
-        /* IoT Sensor Section */
         .sensor-section {
             background: var(--pure-white);
             padding: 40px;
@@ -95,7 +81,6 @@
 
         .chart-box { padding: 20px; border: 1px solid #f0f0f0; border-radius: 15px; }
         .chart-label { font-weight: bold; margin-bottom: 15px; display: block; color: var(--sage-green); }
-
     </style>
 </head>
 <body>
@@ -105,7 +90,7 @@
 
     <header>
         <h1>Farming Stage Analysis</h1>
-        <p>Real-time cultivation data for Batch #PC-7721</p>
+        <p>Live IoT data synchronized from Google Sheets</p>
     </header>
 
     <div class="info-grid">
@@ -116,91 +101,119 @@
             </div>
             <div class="detail-item"><strong>Name:</strong> Chaminda Perera</div>
             <div class="detail-item"><strong>Location:</strong> Keppetipola</div>
-            <div class="detail-item"><strong>Certifications:</strong></div>
-            <div style="margin-top: 5px;">
-                <span class="cert-badge">SLSI</span>
-                <span class="cert-badge">Mayacert</span>
-            </div>
+            <div class="detail-item"><strong>Batch:</strong> #PC-2026-0471</div>
         </div>
 
         <div class="info-card">
             <div class="card-header">
-                <span class="card-icon">📅</span>
-                <h3>Harvest & Freshness</h3>
+                <span class="card-icon">🧪</span>
+                <h3>Latest Readings</h3>
             </div>
-            <div class="detail-item"><strong>Picking Date:</strong> 19/02/2026</div>
-            <div class="detail-item"><strong>Batch No:</strong> B18</div>
-            <div class="detail-item"><strong>Fertilizers:</strong> Organic compost</div>
-            <div class="detail-item"><strong>Safety:</strong> No harmful residues</div>
-        </div>
-
-        <div class="info-card">
-            <div class="card-header">
-                <span class="card-icon">📦</span>
-                <h3>Product Info</h3>
-            </div>
-            <div class="detail-item"><strong>Variety:</strong> Local Orange Carrot</div>
-            <div class="detail-item"><strong>Shelf Life:</strong> 5-7 Days</div>
-            <div class="detail-item"><strong>Nutrition:</strong> Rich in Vitamin A</div>
-            <div class="detail-item"><strong>Packaging:</strong> Eco-friendly</div>
+            <div class="detail-item"><strong>Soil Moisture:</strong> <span id="latest-moisture">--</span> %</div>
+            <div class="detail-item"><strong>Temperature:</strong> <span id="latest-temp">--</span> °C</div>
+            <div class="detail-item"><strong>CO2 Level:</strong> <span id="latest-co2">--</span> ppm</div>
         </div>
     </div>
 
     <div class="sensor-section">
         <div class="sensor-header">
             <h2 style="margin:0; font-size:1.4rem;">Live Soil & Air Sensor Data</h2>
-            <div class="live-tag"><div class="live-dot"></div> LIVE DATA UPDATED HOURLY</div>
+            <div class="live-tag"><div class="live-dot"></div> SENSOR DATA CONNECTED</div>
         </div>
 
         <div class="charts-container">
             <div class="chart-box">
-                <span class="chart-label">Nitrogen (N) — Last 24 Hours (mg/kg)</span>
-                <canvas id="nitrogenChart"></canvas>
+                <span class="chart-label">NPK Levels (Nitrogen, Phosphorus, Potassium)</span>
+                <canvas id="npkChart"></canvas>
             </div>
             <div class="chart-box">
-                <span class="chart-label">Soil Moisture — Last 24 Hours (%)</span>
+                <span class="chart-label">Soil Moisture Trend (%)</span>
                 <canvas id="moistureChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <span class="chart-label">Temperature Log (°C)</span>
+                <canvas id="tempChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <span class="chart-label">Gas (CO2) Sensor (ppm)</span>
+                <canvas id="gasChart"></canvas>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    // Configuration for Nitrogen Chart
-    const ctxN = document.getElementById('nitrogenChart').getContext('2d');
-    new Chart(ctxN, {
-        type: 'line',
-        data: {
-            labels: ['10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'],
-            datasets: [{
-                label: 'Nitrogen Levels',
-                data: [1.2, 1.5, 1.1, 4.2, 1.8, 1.0, 1.1],
-                borderColor: '#2d6a4f',
-                backgroundColor: 'rgba(45, 106, 79, 0.1)',
-                fill: true,
-                tension: 0.4
-            }]
-        },
-        options: { responsive: true, plugins: { legend: { display: false } } }
-    });
+    const apiURL = 'https://sheetdb.io/api/v1/22nvlss512brg';
 
-    // Configuration for Moisture Chart
-    const ctxM = document.getElementById('moistureChart').getContext('2d');
-    new Chart(ctxM, {
-        type: 'line',
-        data: {
-            labels: ['10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'],
-            datasets: [{
-                label: 'Moisture %',
-                data: [210, 225, 220, 230, 225, 225, 224],
-                borderColor: '#0070f3',
-                backgroundColor: 'rgba(0, 112, 243, 0.1)',
-                fill: true,
-                tension: 0.4
-            }]
-        },
-        options: { responsive: true, plugins: { legend: { display: false } } }
-    });
+    async function loadFarmingData() {
+        try {
+            const response = await fetch(apiURL);
+            const data = await response.json();
+
+            // Extract data from the sheet
+            const labels = data.map(row => row.Date);
+            const nitrogen = data.map(row => parseFloat(row.Nitrogen));
+            const phosphorus = data.map(row => parseFloat(row.Phosphorus));
+            const potassium = data.map(row => parseFloat(row.Potassium));
+            const moisture = data.map(row => parseFloat(row["Soil Moisture"]));
+            const temp = data.map(row => parseFloat(row.Temperature));
+            const co2 = data.map(row => parseFloat(row.Gas));
+
+            // Update Header Information with latest data
+            document.getElementById('latest-moisture').innerText = moisture[moisture.length - 1];
+            document.getElementById('latest-temp').innerText = temp[temp.length - 1];
+            document.getElementById('latest-co2').innerText = co2[co2.length - 1];
+
+            // 1. NPK Multi-Line Chart
+            new Chart(document.getElementById('npkChart'), {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        { label: 'Nitrogen', data: nitrogen, borderColor: '#2d6a4f', tension: 0.3 },
+                        { label: 'Phosphorus', data: phosphorus, borderColor: '#e67e22', tension: 0.3 },
+                        { label: 'Potassium', data: potassium, borderColor: '#0070f3', tension: 0.3 }
+                    ]
+                },
+                options: { responsive: true }
+            });
+
+            // 2. Moisture Chart
+            new Chart(document.getElementById('moistureChart'), {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{ label: 'Moisture', data: moisture, borderColor: '#0070f3', backgroundColor: 'rgba(0,112,243,0.1)', fill: true, tension: 0.3 }]
+                },
+                options: { responsive: true, plugins: { legend: { display: false } } }
+            });
+
+            // 3. Temperature Chart
+            new Chart(document.getElementById('tempChart'), {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{ label: 'Temp', data: temp, borderColor: '#e74c3c', tension: 0.3 }]
+                },
+                options: { responsive: true, plugins: { legend: { display: false } } }
+            });
+
+            // 4. Gas (CO2) Chart
+            new Chart(document.getElementById('gasChart'), {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{ label: 'CO2 ppm', data: co2, backgroundColor: 'rgba(82, 121, 111, 0.5)', borderColor: '#52796f', borderWidth: 1 }]
+                },
+                options: { responsive: true, plugins: { legend: { display: false } } }
+            });
+
+        } catch (error) {
+            console.error("Error loading sheet data:", error);
+        }
+    }
+
+    loadFarmingData();
 </script>
 
 </body>
