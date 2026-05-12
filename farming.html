@@ -236,9 +236,9 @@
 
             // 5. Generate Charts with error handling for header names
             // Note: row["Soil Moisture"] is used in case there are spaces in the name
-            createChart('nitrogenChart', 'Nitrogen', '#2d6a4f', data.map(row => cleanValue(row.Nitrogen)));
-            createChart('phosphorusChart', 'Phosphorus', '#386641', data.map(row => cleanValue(row.Phosphorus)));
-            createChart('potassiumChart', 'Potassium', '#6a994e', data.map(row => cleanValue(row.Potassium)));
+            createChart('nitrogenChart', 'Nitrogen', '#2d6a4f', data.map(row => cleanValue(row["N"])));
+            createChart('phosphorusChart', 'Phosphorus', '#386641', data.map(row => cleanValue(row["P"])));
+            createChart('potassiumChart', 'Potassium', '#6a994e', data.map(row => cleanValue(row["K"])));
             createChart('moistureChart', 'Moisture', '#0070f3', data.map(row => cleanValue(row["Soil Moisture"])));
 
         } catch (error) {
