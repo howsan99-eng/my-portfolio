@@ -174,6 +174,7 @@
 </div>
 
 <script>
+    // Your updated API link
     const apiURL = 'https://sheetdb.io/api/v1/vxxim0a4gv07f';
 
     async function fetchData() {
@@ -181,16 +182,31 @@
             const response = await fetch(apiURL);
             const data = await response.json();
 
-            // Helper function to strip non-numeric characters (like mg/kg)
+            // 1. Debugging: This will show you exactly what the code "sees" in your browser console
+            console.log("Raw Data from Sheet:", data);
+
+            if (!data || data.length === 0) {
+                console.error("No data found at the API link.");
+                return;
+            }
+
+            // 2. Data Cleaning Helper
             const cleanValue = (val) => {
-                if (!val) return 0;
-                return parseFloat(val.toString().replace(/[^0-9.]/g, '')) || 0;
+                if (val === undefined || val === null || val === "") return 0;
+                // Removes any text/units and keeps only numbers and decimals
+                const num = parseFloat(val.toString().replace(/[^0-9.]/g, ''));
+                return isNaN(num) ? 0 : num;
             };
 
+            // 3. Extract Labels (Dates)
             const labels = data.map(row => row.Date || 'N/A');
             
+            // 4. Chart Creation Function
             const createChart = (id, label, color, values) => {
-                const ctx = document.getElementById(id).getContext('2d');
+                const canvas = document.getElementById(id);
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                
                 new Chart(ctx, {
                     type: 'line',
                     data: {
@@ -208,16 +224,22 @@
                     options: { 
                         responsive: true, 
                         plugins: { legend: { display: false } },
-                        scales: { y: { beginAtZero: true } }
+                        scales: { 
+                            y: { 
+                                beginAtZero: true,
+                                ticks: { precision: 0 }
+                            } 
+                        }
                     }
                 });
             };
 
-            // Generate the 4 charts using data from your Google Sheet
-            createChart('nitrogenChart', 'Nitrogen', '#2d6a4f', data.map(i => cleanValue(i.Nitrogen)));
-            createChart('phosphorusChart', 'Phosphorus', '#386641', data.map(i => cleanValue(i.Phosphorus)));
-            createChart('potassiumChart', 'Potassium', '#6a994e', data.map(i => cleanValue(i.Potassium)));
-            createChart('moistureChart', 'Moisture', '#0070f3', data.map(i => cleanValue(i["Soil Moisture"])));
+            // 5. Generate Charts with error handling for header names
+            // Note: row["Soil Moisture"] is used in case there are spaces in the name
+            createChart('nitrogenChart', 'Nitrogen', '#2d6a4f', data.map(row => cleanValue(row.Nitrogen)));
+            createChart('phosphorusChart', 'Phosphorus', '#386641', data.map(row => cleanValue(row.Phosphorus)));
+            createChart('potassiumChart', 'Potassium', '#6a994e', data.map(row => cleanValue(row.Potassium)));
+            createChart('moistureChart', 'Moisture', '#0070f3', data.map(row => cleanValue(row["Soil Moisture"])));
 
         } catch (error) {
             console.error('Error fetching Google Sheets data:', error);
