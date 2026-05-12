@@ -93,8 +93,8 @@
             gap: 30px;
         }
 
-        .chart-box { padding: 20px; border: 1px solid #f0f0f0; border-radius: 15px; }
-        .chart-label { font-weight: bold; margin-bottom: 15px; display: block; color: var(--sage-green); }
+        .chart-box { padding: 20px; border: 1px solid #f0f0f0; border-radius: 15px; background: #fafafa; }
+        .chart-label { font-weight: bold; margin-bottom: 15px; display: block; color: var(--sage-green); text-align: center;}
 
     </style>
 </head>
@@ -148,17 +148,25 @@
 
     <div class="sensor-section">
         <div class="sensor-header">
-            <h2 style="margin:0; font-size:1.4rem;">Live Soil & Air Sensor Data</h2>
-            <div class="live-tag"><div class="live-dot"></div> LIVE DATA UPDATED HOURLY</div>
+            <h2 style="margin:0; font-size:1.4rem;">Live Soil & Nutrient Sensor Data</h2>
+            <div class="live-tag"><div class="live-dot"></div> LIVE GOOGLE SHEETS SYNC</div>
         </div>
 
         <div class="charts-container">
             <div class="chart-box">
-                <span class="chart-label">Nitrogen (N) — Last 24 Hours (mg/kg)</span>
+                <span class="chart-label">Nitrogen (N) Trends (mg/kg)</span>
                 <canvas id="nitrogenChart"></canvas>
             </div>
             <div class="chart-box">
-                <span class="chart-label">Soil Moisture — Last 24 Hours (%)</span>
+                <span class="chart-label">Phosphorus (P) Trends (mg/kg)</span>
+                <canvas id="phosphorusChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <span class="chart-label">Potassium (K) Trends (mg/kg)</span>
+                <canvas id="potassiumChart"></canvas>
+            </div>
+            <div class="chart-box">
+                <span class="chart-label">Soil Moisture Trends (%)</span>
                 <canvas id="moistureChart"></canvas>
             </div>
         </div>
@@ -166,41 +174,57 @@
 </div>
 
 <script>
-    // Configuration for Nitrogen Chart
-    const ctxN = document.getElementById('nitrogenChart').getContext('2d');
-    new Chart(ctxN, {
-        type: 'line',
-        data: {
-            labels: ['10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'],
-            datasets: [{
-                label: 'Nitrogen Levels',
-                data: [1.2, 1.5, 1.1, 4.2, 1.8, 1.0, 1.1],
-                borderColor: '#2d6a4f',
-                backgroundColor: 'rgba(45, 106, 79, 0.1)',
-                fill: true,
-                tension: 0.4
-            }]
-        },
-        options: { responsive: true, plugins: { legend: { display: false } } }
-    });
+    const apiURL = 'https://sheetdb.io/api/v1/22nvlss512brg';
 
-    // Configuration for Moisture Chart
-    const ctxM = document.getElementById('moistureChart').getContext('2d');
-    new Chart(ctxM, {
-        type: 'line',
-        data: {
-            labels: ['10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'],
-            datasets: [{
-                label: 'Moisture %',
-                data: [210, 225, 220, 230, 225, 225, 224],
-                borderColor: '#0070f3',
-                backgroundColor: 'rgba(0, 112, 243, 0.1)',
-                fill: true,
-                tension: 0.4
-            }]
-        },
-        options: { responsive: true, plugins: { legend: { display: false } } }
-    });
+    async function fetchData() {
+        try {
+            const response = await fetch(apiURL);
+            const data = await response.json();
+
+            // Helper function to strip non-numeric characters (like mg/kg)
+            const cleanValue = (val) => {
+                if (!val) return 0;
+                return parseFloat(val.toString().replace(/[^0-9.]/g, '')) || 0;
+            };
+
+            const labels = data.map(row => row.Date || 'N/A');
+            
+            const createChart = (id, label, color, values) => {
+                const ctx = document.getElementById(id).getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: label,
+                            data: values,
+                            borderColor: color,
+                            backgroundColor: color + '22',
+                            fill: true,
+                            tension: 0.4,
+                            pointRadius: 3
+                        }]
+                    },
+                    options: { 
+                        responsive: true, 
+                        plugins: { legend: { display: false } },
+                        scales: { y: { beginAtZero: true } }
+                    }
+                });
+            };
+
+            // Generate the 4 charts using data from your Google Sheet
+            createChart('nitrogenChart', 'Nitrogen', '#2d6a4f', data.map(i => cleanValue(i.Nitrogen)));
+            createChart('phosphorusChart', 'Phosphorus', '#386641', data.map(i => cleanValue(i.Phosphorus)));
+            createChart('potassiumChart', 'Potassium', '#6a994e', data.map(i => cleanValue(i.Potassium)));
+            createChart('moistureChart', 'Moisture', '#0070f3', data.map(i => cleanValue(i["Soil Moisture"])));
+
+        } catch (error) {
+            console.error('Error fetching Google Sheets data:', error);
+        }
+    }
+
+    fetchData();
 </script>
 
 </body>
